@@ -2,6 +2,7 @@
 Collection of my volatility3 plugins
 
 ## November 2023
+Writeups: https://medium.com/@rifqiaramadhan/volatility-3-plugin-kusertime-notepad-sticky-evtxlog-f0e8739eee55
 ### notepad.py
 Plugin to determine the approximate content of an unsaved Notepad text based on biggest VAD content that Notepad allocates.
 ### kusertime.py
