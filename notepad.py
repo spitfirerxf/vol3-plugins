@@ -78,7 +78,7 @@ class Notepad(plugins.PluginInterface):
                     if self.config["dump"]:
                         filename = f"pid.{proc_id}.notepad.dmp"
                         with open(filename, "wb") as f:
-                            f.write(final_data_collection)
+                            f.write(final_data_collection.encode())
                     yield (0, [task_pid, taskname , final_data_collection])
                 except exceptions.InvalidAddressException:
                     continue
