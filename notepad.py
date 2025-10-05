@@ -34,8 +34,21 @@ class Notepad(plugins.PluginInterface):
                                                 kernel.layer_name,
                                                 kernel.symbol_table_name)
 
-        return renderers.TreeGrid([("PID", int), ("Image", str),
-                                   ("Probable Strings", str)], self._generator(tasks))
+        return renderers.TreeGrid(
+            [
+                ("PID", int),
+                ("Image", str),
+                ("Probable Strings", str)
+            ],
+            # self._generator(tasks))
+            self._generator(
+                pslist.PsList.list_processes(
+                    context=self.context,
+                    kernel_module_name=self.config['kernel']
+                )
+            )
+        )
+
     def _generator(self, data):
         for task in data:
             taskname = task.ImageFileName.cast("string",max_length = task.ImageFileName.vol.count, errors = 'replace')
@@ -65,7 +78,7 @@ class Notepad(plugins.PluginInterface):
                                 data = proc_layer.read(offset, to_read, pad=True)
                                 offset += to_read
                                 data_collection += data
-                            break            
+                            break
                     chargen = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{}"
                     s = data_collection
                     n = 2
