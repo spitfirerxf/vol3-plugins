@@ -30,9 +30,7 @@ class Notepad(plugins.PluginInterface):
         ]
     def run(self):
         kernel = self.context.modules[self.config["kernel"]]
-        tasks = pslist.PsList.list_processes(self.context,
-                                                kernel.layer_name,
-                                                kernel.symbol_table_name)
+        tasks = pslist.PsList.list_processes(self.context, self.config["kernel"])
 
         return renderers.TreeGrid([("PID", int), ("Image", str),
                                    ("Probable Strings", str)], self._generator(tasks))
@@ -62,9 +60,9 @@ class Notepad(plugins.PluginInterface):
                             vad_size = vad.get_size()
                             while offset < vad_start + vad_size:
                                 to_read = min(chunk_size, vad_start + vad_size - offset)
-                                data = proc_layer.read(offset, to_read, pad=True)
+                                chunk = proc_layer.read(offset, to_read, pad=True)
                                 offset += to_read
-                                data_collection += data
+                                data_collection += chunk
                             break            
                     chargen = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{}"
                     s = data_collection
